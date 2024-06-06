@@ -1,0 +1,53 @@
+modules:
+  jira:globalPage:
+    - key: performance-savvy
+      resource: main
+      resolver:
+        function: resolver
+      title: PerformanceSavvy
+  # scheduledTrigger:
+  #   - key: temp-web-trigger
+  #     function: scheduled-trigger
+  #     interval: hour
+  consumer:
+    - key: queue-consumer-project
+      queue: project-async-queue
+      resolver:
+        function: consumer-function
+        method: processProjectImport-listener
+    - key: queue-consumer-storage
+      queue: storage-async-queue
+      resolver:
+        function: consumer-function
+        method: event-listener-upload
+  function:
+    - key: consumer-function
+      handler: index.handler
+    # - key: scheduled-trigger
+    #   handler: index.scheduledTrigger
+    - key: resolver
+      handler: index.dataHandler
+resources:
+  - key: main
+    path: static/hello-world/build
+    tunnel:
+      port: 3000
+permissions:
+  scopes:
+    - read:jira-work
+    - read:jira-user
+    - manage:jira-project
+    - write:jira-work
+    - read:board-scope:jira-software
+    - read:board-scope.admin:jira-software
+    - read:project:jira
+    - read:sprint:jira-software
+    - read:issue-details:jira
+    - read:issue:jira-software
+    - read:jql:jira
+    - storage:app
+  content:
+    styles:
+      - "unsafe-inline"
+app:
+  id: ari:cloud:ecosystem::app/b527d117-7605-4f2f-a0ae-95a7442b5589
