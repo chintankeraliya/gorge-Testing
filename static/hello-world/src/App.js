@@ -30,8 +30,6 @@ function App() {
     }
   };
 
-  console.log("hii")
-
   const handleEndDateChange = (e) => {
     const selectedDate = e.target.value;
     if (moment(selectedDate).isAfter(today)) {
